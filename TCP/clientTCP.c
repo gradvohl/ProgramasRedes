@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
  // Conecta o socket do client ao socket do servidor
  if (connect(sockfd, (SA*)&servaddr, sizeof(servaddr)) != 0) { 
 	printf("A conexão com o servidor falhou ...\n"); 
-	exit(0); 
+	exit(EXIT_FAILURE); 
  } 
  else
 	printf("Conectado  com o servidor ...\n"); 
@@ -91,5 +91,7 @@ int main(int argc, char *argv[])
 
  // Fecha o socket 
  close(sockfd); 
+
+ return 0;
 } 
 

@@ -74,7 +74,7 @@ int main()
   // Faz a ligacao do socket ao endereco IP e porta.
   if ((bind(sockfd, (SA*)&servaddr, sizeof(servaddr))) != 0) { 
 	printf("A ligacao (bind) com o socket falhou...\n"); 
-	exit(0); 
+	exit(EXIT_FAILURE); 
   } 
   else
 	printf("Socket ligado (binded) com sucesso ...\n"); 
@@ -82,7 +82,7 @@ int main()
   // Aguardando conexões dos clientes.
   if ((listen(sockfd, 5)) != 0) { 
 	printf("Escuta falhou...\n"); 
-	exit(0); 
+	exit(EXIT_FAILURE); 
   } 
   else
 	printf("Servidor escutando...\n"); 
@@ -93,7 +93,7 @@ int main()
   connfd = accept(sockfd, (SA*)&cli, &len); 
   if (connfd < 0) { 
   	printf("O aceite do servidor falhou...\n"); 
-	exit(0); 
+	exit(EXIT_FAILURE); 
   } 
   else
 	printf("O servidor aceitou o cliente ...\n"); 
@@ -103,5 +103,7 @@ int main()
 
   // Fecha o socket
   close(sockfd); 
+
+  return 0;
 } 
 
