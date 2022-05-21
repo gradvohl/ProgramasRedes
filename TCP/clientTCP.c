@@ -25,7 +25,7 @@ void func(int sockfd)
  // Laco infinito do chat
  for (;;) { 
 	bzero(buff, sizeof(buff)); 
-	printf("Enter the string : "); 
+	printf("Informe uma string: "); 
 	n = 0; 
 
 	while ((buff[n++] = getchar()) != '\n') 
@@ -39,11 +39,11 @@ void func(int sockfd)
         // Le a mensagem do servidor e copia para o buffer.
 	read(sockfd, buff, sizeof(buff)); 
 
-	printf("From Server : %s", buff); 
+	printf("Mensagem do Servidor : %s", buff); 
 
-	// Se a mensagem for "exit" sai do laco.
-	if ((strncmp(buff, "exit", 4)) == 0) { 
-		printf("Client Exit...\n"); 
+	// Se a mensagem for "sair" sai do laco.
+	if ((strncmp(buff, "sair", 4)) == 0) { 
+		printf("Cliente saiu...\n"); 
 		break; 
 	} 
   } 
@@ -62,32 +62,29 @@ int main(int argc, char *argv[])
    exit(EXIT_FAILURE);
  }
 
-
-
-
  // Criacao e verificacao do socket 
  sockfd = socket(AF_INET, SOCK_STREAM, 0); 
  if (sockfd == -1) { 
-	printf("socket creation failed...\n"); 
-	exit(0); 
+	printf("A criacao do socket falhou...\n"); 
+	exit(EXIT_FAILURE); 
  } 
  else
-	printf("Socket successfully created..\n"); 
+	printf("Socket criado com sucesso ...\n"); 
 
  bzero(&servaddr, sizeof(servaddr)); 
 
  // Atribui IP e PORT 
  servaddr.sin_family = AF_INET; 
- servaddr.sin_addr.s_addr = inet_addr(argv[1]);//"127.0.0.1"); 
+ servaddr.sin_addr.s_addr = inet_addr(argv[1]);
  servaddr.sin_port = htons(PORT); 
 
  // Conecta o socket do client ao socket do servidor
  if (connect(sockfd, (SA*)&servaddr, sizeof(servaddr)) != 0) { 
-	printf("connection with the server failed...\n"); 
+	printf("A conexão com o servidor falhou ...\n"); 
 	exit(0); 
  } 
  else
-	printf("connected to the server..\n"); 
+	printf("Conectado  com o servidor ...\n"); 
 
  // Chama a funcao para gerenciar o chat
  func(sockfd); 

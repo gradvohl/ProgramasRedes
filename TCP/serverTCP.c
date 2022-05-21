@@ -2,7 +2,7 @@
  * Exemplo de servidor de Chat.
  *
  * Obtido e adaptado do site
- * https://www.geeksforgeeks.org/tcp-server-client-implementation-in-c/
+ * https://www.geeksforgeeks.org/tcp-servidor-client-implementation-in-c/
  *
  */  
 #include <stdio.h> 
@@ -31,7 +31,7 @@ void func(int sockfd)
    read(sockfd, buff, sizeof(buff)); 
 
    // Imprime a mensagem que chegou ao buffer
-   printf("From client: %s\t To client : ", buff); 
+   printf("Recebido do cliente: %s\t Enviar para o cliente: ", buff); 
    bzero(buff, MAX); 
    n = 0; 
 
@@ -42,9 +42,9 @@ void func(int sockfd)
    // Envia a mensagem que esta no buffer para o cliente
    write(sockfd, buff, sizeof(buff)); 
 
-   // Se a mensagem no buffer for "exit" entao termina o chat e sai do servidor.
-   if (strncmp("exit", buff, 4) == 0) { 
-      printf("Server Exit...\n"); 
+   // Se a mensagem no buffer for "sair" entao termina o chat e sai do servidor.
+   if (strncmp("sair", buff, 4) == 0) { 
+      printf("Servidor saiu...\n"); 
       break; 
    } 
  } 
@@ -58,11 +58,11 @@ int main()
   // Criacao e verificacao do socket
   sockfd = socket(AF_INET, SOCK_STREAM, 0); 
   if (sockfd == -1) { 
- 	printf("socket creation failed...\n"); 
-	exit(0); 
+ 	printf("A criacao do socket falhou ...\n"); 
+	exit(EXIT_FAILURE); 
   } 
   else
-	printf("Socket successfully created..\n"); 
+	printf("Socket criado com sucesso ...\n"); 
 
   bzero(&servaddr, sizeof(servaddr)); 
 
@@ -73,30 +73,30 @@ int main()
 
   // Faz a ligacao do socket ao endereco IP e porta.
   if ((bind(sockfd, (SA*)&servaddr, sizeof(servaddr))) != 0) { 
-	printf("socket bind failed...\n"); 
+	printf("A ligacao (bind) com o socket falhou...\n"); 
 	exit(0); 
   } 
   else
-	printf("Socket successfully binded..\n"); 
+	printf("Socket ligado (binded) com sucesso ...\n"); 
 
   // Aguardando conexões dos clientes.
   if ((listen(sockfd, 5)) != 0) { 
-	printf("Listen failed...\n"); 
+	printf("Escuta falhou...\n"); 
 	exit(0); 
   } 
   else
-	printf("Server listening..\n"); 
+	printf("Servidor escutando...\n"); 
 
   len = sizeof(cli); 
 
   // Aceita a conexão do cliente e verifica.
   connfd = accept(sockfd, (SA*)&cli, &len); 
   if (connfd < 0) { 
-  	printf("server acccept failed...\n"); 
+  	printf("O aceite do servidor falhou...\n"); 
 	exit(0); 
   } 
   else
-	printf("server acccept the client...\n"); 
+	printf("O servidor aceitou o cliente ...\n"); 
 
   // Chama a funcao para gerenciar o chat
   func(connfd); 
