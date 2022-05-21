@@ -12,6 +12,7 @@
 #include <string.h> 
 #include <sys/socket.h> 
 #include <sys/types.h> 
+#include <unistd.h>
 #define MAX 80 
 #define PORT 4321 
 #define SA struct sockaddr 
