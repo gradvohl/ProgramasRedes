@@ -13,7 +13,7 @@
 #include <string.h> /* memset() */
 #include <sys/time.h> /* select() */ 
 
-#define REMOTE_SERVER_PORT 1500
+#define REMOTE_SERVER_PORT 4321
 #define MAX_MSG 100
 
 

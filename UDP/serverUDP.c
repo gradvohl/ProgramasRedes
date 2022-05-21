@@ -13,7 +13,7 @@
 #include <unistd.h> /* close() */
 #include <string.h> /* memset() */
 
-#define LOCAL_SERVER_PORT 1500
+#define LOCAL_SERVER_PORT 4321
 #define MAX_MSG 100
 
 int main(int argc, char *argv[]) {
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   sd=socket(AF_INET, SOCK_DGRAM, 0);
   if(sd<0) {
     printf("%s: Nao foi possivel abrir o socket \n",argv[0]);
-    exit(1);
+    exit(EXIT_FAILURE);
   }
 
   // Liga-se ao endereco e porta do servidor
