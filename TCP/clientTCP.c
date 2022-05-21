@@ -49,10 +49,21 @@ void func(int sockfd)
   } 
 } 
 
-int main() 
+int main(int argc, char *argv[]) 
 { 
  int sockfd, connfd; 
  struct sockaddr_in servaddr, cli; 
+ /*char ipServidor[20]; 
+ unsigned int tamanhoIPServidor=0;*/
+
+ if (argc < 2)
+ {
+   fprintf(stderr,"Falta informar o IP do servidor!\n");
+   exit(EXIT_FAILURE);
+ }
+
+
+
 
  // Criacao e verificacao do socket 
  sockfd = socket(AF_INET, SOCK_STREAM, 0); 
@@ -67,7 +78,7 @@ int main()
 
  // Atribui IP e PORT 
  servaddr.sin_family = AF_INET; 
- servaddr.sin_addr.s_addr = inet_addr("127.0.0.1"); 
+ servaddr.sin_addr.s_addr = inet_addr(argv[1]);//"127.0.0.1"); 
  servaddr.sin_port = htons(PORT); 
 
  // Conecta o socket do client ao socket do servidor
