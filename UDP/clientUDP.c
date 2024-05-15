@@ -14,13 +14,22 @@
 #include <sys/time.h> /* select() */ 
 
 #define REMOTE_SERVER_PORT 4321
-#define MAX_MSG 100
+#define MAX 100
 
 
-int main(int argc, char *argv[]) {
-  
-  int sd, rc, i;
-  struct sockaddr_in cliAddr, remoteServAddr;
+int main(int argc, char *argv[]) 
+{
+  // Descritor do socket
+  int sd; 
+  // Variaveis auxiliares
+  int rc, i;
+
+  // Estruturas para armazenar os dados do cliente
+  // e do servidor
+  struct sockaddr_in cliAddr;
+  struct sockaddr_in remoteServAddr;
+
+  // Estruturas para armazenar dados do host
   struct hostent *host;
 
   // Verificar argumentos da linha de comando
@@ -29,7 +38,7 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  // Obtem o endereco IP ou host como argumento da entrada.
+  // Obtem o endereco IP ou host enviado como argumento da entrada.
   host = gethostbyname(argv[1]);
 
   if (host == NULL) 
@@ -47,19 +56,31 @@ int main(int argc, char *argv[]) {
 	 host->h_addr_list[0], host->h_length);
   remoteServAddr.sin_port = htons(REMOTE_SERVER_PORT);
 
-  // Criacao do socket
+  // Criacao e verificacao do socket.
+  // Parametros:
+  //   AF_INET: o Protocolo IPv4
+  //   SOCK_DGRAM: Equivalente ao protocolo UDP
+  //   0: Informa um protocolo especifico na familia de protocolos. Pode deixar 0 mesmo
   sd = socket(AF_INET,SOCK_DGRAM,0);
   if(sd<0) {
     printf("%s: nao e possivel abrir o socket \n",argv[0]);
     exit(EXIT_FAILURE);
   }
   
-  // Conecta-se a qualquer endereco/porta disponivel
+  // Atribui as informacoes especificas na estrutura cliAddr
+  //  A familia de protocolos e o AF_INET (IPv4)
   cliAddr.sin_family = AF_INET;
+  //  Endereco do qual aceita conexoes.
+  //  Nesse caso, INADDR_ANY significa qualquer endereco.
   cliAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+  // O htons(0) vai indicar que o sistema operacional escolhera a porta.
   cliAddr.sin_port = htons(0);
   
-  // Liga-se ao endereco do cliente
+  // Faz a ligacao do socket ao endereco IP e porta.
+  // A primitiva bind utiliza tres parametros:
+  //   - o descritor do socket
+  //   - a estrutura com os dados do servidor preenchida nos comandos anteriores
+  //   - o tamanho da estrutura com os dados do servidor
   rc = bind(sd, (struct sockaddr *) &cliAddr, sizeof(cliAddr));
   if(rc<0) {
     printf("%s: Nao pode se ligar a porta\n", argv[0]);
@@ -69,6 +90,13 @@ int main(int argc, char *argv[]) {
 
   // Enviar os dados
   for(i=2;i<argc;i++) {
+    // A primitiva sendto recebe seis parametros:
+    //   - descritor do software
+    //   - variavel que contem os dados os dados a serem enviados
+    //   - tamanho da variavel que contem os dados a serem enviados
+    //   - as flags. Nesse caso, mantenha 0 ou de uma olhada no manual do sendto
+    //   - estrutura com as informacoes do servidor
+    //   - tamanho da estrutura com as informacoes do servidor
     rc = sendto(sd, argv[i], strlen(argv[i])+1, 0, 
 		(struct sockaddr *) &remoteServAddr, 
 		sizeof(remoteServAddr));
