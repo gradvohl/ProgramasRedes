@@ -24,7 +24,7 @@ all: $(OBJETOS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $< -o $@
-	@echo -e "\nExecute o programa ${FONTES} e abra outras duas janelas com o terminal."
+	@echo -e "\nExecute o programa ./${OBJETOS} e abra outras duas janelas com o terminal."
 	@echo -e "Em seguida, em cada uma das janelas, execute o comando a seguir. Depois, escreva mensagens e tecle enter:\n"
 	@echo -e "telnet 127.0.0.1 8080\n"
 
