@@ -28,6 +28,10 @@ all: $(OBJETOS)
 	@echo -e "Em seguida, em cada uma das janelas, execute o comando a seguir. Depois, escreva mensagens e tecle enter:\n"
 	@echo -e "telnet 127.0.0.1 8081\n"
 
+### Lembrete para o professor: 
+###   use o comando: "sudo tcpdump -A -i lo -n port 8081 -v" 
+###   para para capturar o tráfego na porta 8081
+
 
 #Limpeza
 clean:
